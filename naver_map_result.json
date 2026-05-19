@@ -1,0 +1,5 @@
+{
+  "message": "Route GET:/search?caller=pcweb&query=%EC%84%9C%EC%9A%B8%ED%8A%B9%EB%B3%84%EC%8B%9C+%EC%96%91%EC%B2%9C%EA%B5%AC+%EC%8B%A0%EC%A0%95%EB%8F%99+1025-28&type=all not found",
+  "error": "Not Found",
+  "statusCode": 404
+}
