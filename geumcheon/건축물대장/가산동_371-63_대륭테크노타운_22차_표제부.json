@@ -1,0 +1,36 @@
+{
+  "출처": "https://www.eais.go.kr/moct/bci/aaa02/BCIAAA02L01",
+  "api": "/bci/BCIAAA02R01",
+  "조회지번": "가산동 371-63",
+  "시트건축물명": "대륭테크노타운 22차",
+  "시트연면적": "27,686.75",
+  "대지위치": "서울특별시 금천구 가산동 371-63",
+  "표제부목록": [
+    {
+      "sigunguCd": "11545",
+      "bjdongCd": "10100",
+      "platGbCd": "0",
+      "mnnm": "0371",
+      "slno": "0063",
+      "bldrgstCurdiGbCd": "0",
+      "bldrgstSeqno": "1000000000000001043725",
+      "regstrGbCd": "2",
+      "regstrKindCd": "3",
+      "regstrKindNm": "표제부",
+      "sigunguNm": "서울특별시 금천구",
+      "bjdongNm": "가산동",
+      "bldNm": "대륭테크노타운 22차",
+      "dongNm": "대륭테크노타운 22차",
+      "mainPrposNm": "산업시설(공장_지식산업센터),지원시설(근린생활시설)",
+      "totArea": "27686.75",
+      "ownrYn": "N",
+      "multiUseBldYn": "N",
+      "blprtYn": "Y",
+      "plplanIncYn": "Y",
+      "mjrfmlyYn": "N",
+      "rntybrhsYn": "N",
+      "untClsfCd": "1019"
+    }
+  ],
+  "비고": "세움터 표제부 검색결과. 공식 PDF 발급/상세열람은 실명인증 필요."
+}

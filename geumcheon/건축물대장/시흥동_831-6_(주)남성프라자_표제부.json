@@ -1,0 +1,36 @@
+{
+  "출처": "https://www.eais.go.kr/moct/bci/aaa02/BCIAAA02L01",
+  "api": "/bci/BCIAAA02R01",
+  "조회지번": "시흥동 831-6",
+  "시트건축물명": "(주)남성프라자",
+  "시트연면적": "13,837.4",
+  "대지위치": "서울특별시 금천구 시흥동 831-6",
+  "표제부목록": [
+    {
+      "sigunguCd": "11545",
+      "bjdongCd": "10300",
+      "platGbCd": "0",
+      "mnnm": "0831",
+      "slno": "0006",
+      "bldrgstCurdiGbCd": "0",
+      "bldrgstSeqno": "1019114066",
+      "regstrGbCd": "1",
+      "regstrKindCd": "2",
+      "regstrKindNm": "일반건축물",
+      "sigunguNm": "서울특별시 금천구",
+      "bjdongNm": "시흥동",
+      "bldNm": "(주)남성프라자",
+      "dongNm": "(주)남성프라자",
+      "mainPrposNm": "제1,2종근린생활시설,판매시설,운동시설,방송통신실",
+      "totArea": "13837.4",
+      "ownrYn": "N",
+      "multiUseBldYn": "N",
+      "blprtYn": "Y",
+      "plplanIncYn": "Y",
+      "mjrfmlyYn": "N",
+      "rntybrhsYn": "N",
+      "untClsfCd": "1019"
+    }
+  ],
+  "비고": "세움터 표제부 검색결과. 공식 PDF 발급/상세열람은 실명인증 필요."
+}

@@ -17,3 +17,12 @@ Thumbs.db
 # 엑셀/CSV 백업 파일 (필요시)
 *_backup.xlsx
 *_v2.xlsx
+
+# Office 임시/잠금 파일
+~$*
+*.tmp
+
+# 로컬 검색 캐시(재생성 가능)
+guro_permits/building_name_cache.json
+guro_permits/mgmt_contact_cache.json
+geumcheon/mgmt_lookup_cache.json

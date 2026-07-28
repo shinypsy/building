@@ -1,0 +1,35 @@
+{
+  "출처": "https://www.eais.go.kr/moct/bci/aaa02/BCIAAA02L01",
+  "api": "/bci/BCIAAA02R01",
+  "조회지번": "가산동 535-130",
+  "시트건축물명": "쉴낙원 서울 장례식장",
+  "시트연면적": "5,076.93",
+  "대지위치": "서울특별시 금천구 가산동 535-130",
+  "표제부목록": [
+    {
+      "sigunguCd": "11545",
+      "bjdongCd": "10100",
+      "platGbCd": "0",
+      "mnnm": "0535",
+      "slno": "0130",
+      "bldrgstCurdiGbCd": "0",
+      "bldrgstSeqno": "1019116299",
+      "regstrGbCd": "1",
+      "regstrKindCd": "2",
+      "regstrKindNm": "일반건축물",
+      "sigunguNm": "서울특별시 금천구",
+      "bjdongNm": "가산동",
+      "bldNm": "쉴낙원 서울 장례식장",
+      "mainPrposNm": "자동차관련시설,의료시설,장례식장,제1,2종근생",
+      "totArea": "5076.93",
+      "ownrYn": "N",
+      "multiUseBldYn": "N",
+      "blprtYn": "Y",
+      "plplanIncYn": "Y",
+      "mjrfmlyYn": "N",
+      "rntybrhsYn": "N",
+      "untClsfCd": "1019"
+    }
+  ],
+  "비고": "세움터 표제부 검색결과. 공식 PDF 발급/상세열람은 실명인증 필요."
+}

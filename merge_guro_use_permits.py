@@ -1,87 +1,196 @@
+# -*- coding: utf-8 -*-
+"""guro_permits 폴더 월별 엑셀의 모든 시트(건축허가·착공·사용승인·임시승인) 통합."""
+
+from __future__ import annotations
+
 import os
-import pandas as pd
+import re
+import sys
 import warnings
 
-# xlrd 라이브러리 경고 무시
-warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
+import pandas as pd
 
-TARGET_DIR = "guro_permits"
-OUTPUT_FILE = "구로구 사용승인 현황(2020년이후).xlsx"
+warnings.filterwarnings("ignore", category=UserWarning)
 
-def extract_year_from_filename(filename):
-    import re
-    match = re.search(r'(20\d{2})', filename)
-    if match:
-        return int(match.group(1))
+sys.stdout.reconfigure(encoding="utf-8")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TARGET_DIR = os.path.join(BASE_DIR, "guro_permits")
+OUTPUT_FILE = os.path.join(TARGET_DIR, "구로구_건축허가착공사용승인_통합.xlsx")
+OUTPUT_USE_ONLY = os.path.join(TARGET_DIR, "구로구_사용승인현황_통합.xlsx")
+
+SKIP_FILES = {
+    "구로구 사용승인 현황(2020년이후).xlsx",
+    "구로구_사용승인현황_통합.xlsx",
+    "구로구_건축허가착공사용승인_통합.xlsx",
+}
+
+NTT_PATTERN = re.compile(r"^(\d+)_(\d+)_")
+CATEGORY_ORDER = ["건축허가", "착공신고", "사용승인", "사용임시승인", "기타"]
+
+
+def list_source_files() -> list[str]:
+    files: list[str] = []
+    for name in os.listdir(TARGET_DIR):
+        lower = name.lower()
+        if name in SKIP_FILES:
+            continue
+        if not lower.endswith((".xls", ".xlsx", ".xlsm")):
+            continue
+        if not NTT_PATTERN.match(name):
+            continue
+        files.append(name)
+    return sorted(files)
+
+
+def classify_sheet(sheet_name: str) -> str:
+    text = str(sheet_name).replace(" ", "")
+    if "사용(임시)승인" in text or "임시승인" in text:
+        return "사용임시승인"
+    if "사용승인" in text:
+        return "사용승인"
+    if "착공" in text:
+        return "착공신고"
+    if "건축허가" in text or "건축신고" in text:
+        return "건축허가"
+    return "기타"
+
+
+def should_skip_sheet(sheet_name: str) -> bool:
+    name = str(sheet_name).strip()
+    if not name or name.lower() == "sheet1":
+        return True
+    return False
+
+
+def read_excel(path: str, sheet_name: str) -> pd.DataFrame:
+    ext = os.path.splitext(path)[1].lower()
+    if ext == ".xls":
+        try:
+            return pd.read_excel(path, sheet_name=sheet_name, engine="xlrd")
+        except Exception:
+            return pd.read_excel(path, sheet_name=sheet_name)
+    return pd.read_excel(path, sheet_name=sheet_name, engine="openpyxl")
+
+
+def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
+    df = df.copy()
+    df.columns = [str(col).strip().replace("\n", "") for col in df.columns]
+    return df.dropna(how="all")
+
+
+def concat_frames(frames: list[pd.DataFrame]) -> pd.DataFrame:
+    if not frames:
+        return pd.DataFrame()
+
+    all_columns: list[str] = []
+    seen: set[str] = set()
+    for frame in frames:
+        for col in frame.columns:
+            if col not in seen:
+                seen.add(col)
+                all_columns.append(col)
+
+    aligned = [frame.reindex(columns=all_columns) for frame in frames]
+    return pd.concat(aligned, ignore_index=True)
+
+
+def merge_all(filenames: list[str]) -> dict[str, pd.DataFrame]:
+    buckets: dict[str, list[pd.DataFrame]] = {key: [] for key in CATEGORY_ORDER}
+    stats = {"files": 0, "sheets": 0, "rows": 0, "skipped_files": 0}
+
+    for filename in filenames:
+        filepath = os.path.join(TARGET_DIR, filename)
+        file_rows = 0
+        file_sheets = 0
+
+        try:
+            workbook = pd.ExcelFile(filepath)
+            for sheet_name in workbook.sheet_names:
+                if should_skip_sheet(sheet_name):
+                    continue
+
+                df = read_excel(filepath, sheet_name)
+                df = normalize_columns(df)
+                if df.empty:
+                    continue
+
+                category = classify_sheet(sheet_name)
+                df.insert(0, "출처파일명", filename)
+                df.insert(1, "출처시트명", sheet_name)
+                df.insert(2, "데이터구분", category)
+                buckets[category].append(df)
+                file_rows += len(df)
+                file_sheets += 1
+
+            if file_sheets:
+                stats["files"] += 1
+                stats["sheets"] += file_sheets
+                stats["rows"] += file_rows
+                print(f"  [OK] {filename} ({file_rows}행, 시트 {file_sheets}개)")
+            else:
+                stats["skipped_files"] += 1
+                print(f"  [SKIP] {filename} (유효 시트 없음)")
+        except Exception as exc:
+            stats["skipped_files"] += 1
+            print(f"  [FAIL] {filename}: {exc}")
+
+    print(
+        f"\n[SUMMARY] 파일 {stats['files']}개, 시트 {stats['sheets']}개, "
+        f"총 {stats['rows']}행, 스킵/실패 {stats['skipped_files']}개"
+    )
+
+    return {key: concat_frames(buckets[key]) for key in CATEGORY_ORDER}
+
+
+def write_outputs(grouped: dict[str, pd.DataFrame]) -> None:
+    with pd.ExcelWriter(OUTPUT_FILE, engine="openpyxl") as writer:
+        for category in CATEGORY_ORDER:
+            df = grouped[category]
+            if df.empty:
+                continue
+            sheet = f"{category}_통합"[:31]
+            df.to_excel(writer, index=False, sheet_name=sheet)
+            print(f"  [SHEET] {sheet}: {len(df)}행, {len(df.columns)}열")
+
+    use_frames = [
+        grouped["사용승인"],
+        grouped["사용임시승인"],
+    ]
+    use_merged = concat_frames([df for df in use_frames if not df.empty])
+    if not use_merged.empty:
+        with pd.ExcelWriter(OUTPUT_USE_ONLY, engine="openpyxl") as writer:
+            use_merged.to_excel(writer, index=False, sheet_name="사용승인_통합")
+        print(
+            f"  [SHEET] 사용승인_통합(사용+임시): "
+            f"{len(use_merged)}행, {len(use_merged.columns)}열"
+        )
+
+
+def main() -> int:
+    if not os.path.isdir(TARGET_DIR):
+        print(f"폴더 없음: {TARGET_DIR}")
+        return 1
+
+    filenames = list_source_files()
+    if not filenames:
+        print("통합할 원본 파일이 없습니다.")
+        return 1
+
+    print(f"[MERGE-ALL] 대상 파일 {len(filenames)}개\n")
+    grouped = merge_all(filenames)
+
+    if all(df.empty for df in grouped.values()):
+        print("취합할 데이터가 없습니다.")
+        return 1
+
+    print(f"\n[WRITE] {OUTPUT_FILE}")
+    write_outputs(grouped)
+    print(f"\n[DONE]")
+    print(f"  전체: {OUTPUT_FILE}")
+    print(f"  사용승인+임시: {OUTPUT_USE_ONLY}")
     return 0
 
-def main():
-    print(f"1. '{TARGET_DIR}' 폴더 내 2020년 이후 파일 스캔 시작...")
-    
-    if not os.path.exists(TARGET_DIR):
-        print(f"Error: {TARGET_DIR} 폴더가 존재하지 않습니다.")
-        return
-
-    all_dfs = []
-    processed_files = 0
-    skipped_files = 0
-    sheet_found_count = 0
-
-    files = [f for f in os.listdir(TARGET_DIR) if f.lower().endswith(('.xls', '.xlsx'))]
-    
-    for filename in files:
-        year = extract_year_from_filename(filename)
-        
-        # 2020년 이전 파일은 패스
-        if year < 2020:
-            skipped_files += 1
-            continue
-            
-        filepath = os.path.join(TARGET_DIR, filename)
-        
-        try:
-            # 엑셀 파일 로드 및 시트명 분석
-            xl = pd.ExcelFile(filepath)
-            target_sheets = [sheet for sheet in xl.sheet_names if '사용승인' in str(sheet)]
-            
-            if target_sheets:
-                # 사용승인 시트가 여러 개일 경우 모두 읽어서 합침
-                for sheet_name in target_sheets:
-                    df = pd.read_excel(filepath, sheet_name=sheet_name)
-                    # 데이터 출처 추적을 위해 소스 파일명 기입
-                    df['출처파일명'] = filename 
-                    df['출처시트명'] = sheet_name
-                    all_dfs.append(df)
-                    sheet_found_count += 1
-                    
-                processed_files += 1
-                print(f"  -> [성공] '{filename}'에서 {len(target_sheets)}개의 사용승인 시트 추출")
-            else:
-                # 사용승인 시트가 없는 경우
-                print(f"  -> [패스] '{filename}' (사용승인 시트 없음)")
-                
-        except Exception as e:
-            print(f"  -> [에러] '{filename}' 읽기 실패: {e}")
-
-    print(f"\n2. 데이터 취합 중...")
-    print(f"총 스캔 대상 파일 수: {len(files)}개")
-    print(f"2020년 이전 제외 파일 수: {skipped_files}개")
-    print(f"사용승인 시트 추출 성공 파일 수: {processed_files}개")
-    print(f"추출된 사용승인 시트 총 개수: {sheet_found_count}개")
-
-    if not all_dfs:
-        print("\n취합할 '사용승인' 데이터가 없습니다.")
-        return
-
-    # 컬럼 구조가 다를 수 있으므로 빈틈없이 병합
-    final_df = pd.concat(all_dfs, ignore_index=True)
-    
-    print("\n3. 최종 엑셀 파일 생성 중...")
-    # openpyxl 엔진으로 엑셀 저장
-    with pd.ExcelWriter(OUTPUT_FILE, engine='openpyxl') as writer:
-        final_df.to_excel(writer, index=False, sheet_name='사용승인_통합')
-        
-    print(f"\n★ 대성공! 총 {len(final_df)}행의 데이터가 '{OUTPUT_FILE}' 파일에 저장되었습니다!")
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

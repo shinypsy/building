@@ -1,0 +1,35 @@
+{
+  "출처": "https://www.eais.go.kr/moct/bci/aaa02/BCIAAA02L01",
+  "api": "/bci/BCIAAA02R01",
+  "조회지번": "가산동 60-46",
+  "시트건축물명": "더리즌밸리 지식산업센터",
+  "시트연면적": "25,153.56",
+  "대지위치": "서울특별시 금천구 가산동 60-46",
+  "표제부목록": [
+    {
+      "sigunguCd": "11545",
+      "bjdongCd": "10100",
+      "platGbCd": "0",
+      "mnnm": "0060",
+      "slno": "0046",
+      "bldrgstCurdiGbCd": "0",
+      "bldrgstSeqno": "10191100255472",
+      "regstrGbCd": "2",
+      "regstrKindCd": "3",
+      "regstrKindNm": "표제부",
+      "sigunguNm": "서울특별시 금천구",
+      "bjdongNm": "가산동",
+      "bldNm": "더리즌밸리 지식산업센터",
+      "mainPrposNm": "공장, 제2종근린생활시설",
+      "totArea": "25153.56",
+      "ownrYn": "N",
+      "multiUseBldYn": "N",
+      "blprtYn": "Y",
+      "plplanIncYn": "Y",
+      "mjrfmlyYn": "N",
+      "rntybrhsYn": "N",
+      "untClsfCd": "1019"
+    }
+  ],
+  "비고": "세움터 표제부 검색결과. 공식 PDF 발급/상세열람은 실명인증 필요."
+}

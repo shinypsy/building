@@ -1,0 +1,36 @@
+{
+  "출처": "https://www.eais.go.kr/moct/bci/aaa02/BCIAAA02L01",
+  "api": "/bci/BCIAAA02R01",
+  "조회지번": "시흥동 991-0",
+  "시트건축물명": "아람아이씨티타워",
+  "시트연면적": "17,706.88",
+  "대지위치": "서울특별시 금천구 시흥동 991",
+  "표제부목록": [
+    {
+      "sigunguCd": "11545",
+      "bjdongCd": "10300",
+      "platGbCd": "0",
+      "mnnm": "0991",
+      "slno": "0000",
+      "bldrgstCurdiGbCd": "0",
+      "bldrgstSeqno": "10191100246051",
+      "regstrGbCd": "2",
+      "regstrKindCd": "3",
+      "regstrKindNm": "표제부",
+      "sigunguNm": "서울특별시 금천구",
+      "bjdongNm": "시흥동",
+      "bldNm": "아람아이씨티타워",
+      "dongNm": "아람아이씨티타워",
+      "mainPrposNm": "공장(지식산업센터)",
+      "totArea": "17706.88",
+      "ownrYn": "N",
+      "multiUseBldYn": "N",
+      "blprtYn": "Y",
+      "plplanIncYn": "Y",
+      "mjrfmlyYn": "N",
+      "rntybrhsYn": "N",
+      "untClsfCd": "1019"
+    }
+  ],
+  "비고": "세움터 표제부 검색결과. 공식 PDF 발급/상세열람은 실명인증 필요."
+}

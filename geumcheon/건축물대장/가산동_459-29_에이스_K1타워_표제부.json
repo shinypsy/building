@@ -1,0 +1,35 @@
+{
+  "출처": "https://www.eais.go.kr/moct/bci/aaa02/BCIAAA02L01",
+  "api": "/bci/BCIAAA02R01",
+  "조회지번": "가산동 459-29",
+  "시트건축물명": "에이스 K1타워",
+  "시트연면적": "25,520.951",
+  "대지위치": "서울특별시 금천구 가산동 459-29",
+  "표제부목록": [
+    {
+      "sigunguCd": "11545",
+      "bjdongCd": "10100",
+      "platGbCd": "0",
+      "mnnm": "0459",
+      "slno": "0029",
+      "bldrgstCurdiGbCd": "0",
+      "bldrgstSeqno": "10191100255111",
+      "regstrGbCd": "2",
+      "regstrKindCd": "3",
+      "regstrKindNm": "표제부",
+      "sigunguNm": "서울특별시 금천구",
+      "bjdongNm": "가산동",
+      "bldNm": "에이스 K1타워",
+      "mainPrposNm": "공장(지식산업센터,기숙사),제2종근린생활시설",
+      "totArea": "25520.951",
+      "ownrYn": "N",
+      "multiUseBldYn": "N",
+      "blprtYn": "Y",
+      "plplanIncYn": "Y",
+      "mjrfmlyYn": "N",
+      "rntybrhsYn": "N",
+      "untClsfCd": "1019"
+    }
+  ],
+  "비고": "세움터 표제부 검색결과. 공식 PDF 발급/상세열람은 실명인증 필요."
+}

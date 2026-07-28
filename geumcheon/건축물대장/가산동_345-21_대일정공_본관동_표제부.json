@@ -1,0 +1,36 @@
+{
+  "출처": "https://www.eais.go.kr/moct/bci/aaa02/BCIAAA02L01",
+  "api": "/bci/BCIAAA02R01",
+  "조회지번": "가산동 345-21",
+  "시트건축물명": "대일정공 본관동",
+  "시트연면적": "7,121.23",
+  "대지위치": "서울특별시 금천구 가산동 345-21",
+  "표제부목록": [
+    {
+      "sigunguCd": "11545",
+      "bjdongCd": "10100",
+      "platGbCd": "0",
+      "mnnm": "0345",
+      "slno": "0021",
+      "bldrgstCurdiGbCd": "0",
+      "bldrgstSeqno": "101912988",
+      "regstrGbCd": "1",
+      "regstrKindCd": "2",
+      "regstrKindNm": "일반건축물",
+      "sigunguNm": "서울특별시 금천구",
+      "bjdongNm": "가산동",
+      "bldNm": "대일정공 본관동",
+      "dongNm": "본관동",
+      "mainPrposNm": "공장",
+      "totArea": "7121.23",
+      "ownrYn": "N",
+      "multiUseBldYn": "N",
+      "blprtYn": "Y",
+      "plplanIncYn": "N",
+      "mjrfmlyYn": "N",
+      "rntybrhsYn": "N",
+      "untClsfCd": "1019"
+    }
+  ],
+  "비고": "세움터 표제부 검색결과. 공식 PDF 발급/상세열람은 실명인증 필요."
+}
